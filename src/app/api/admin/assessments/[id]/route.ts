@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getAuthorizedSession } from "@/lib/auth/rbac";
 import { z } from "zod";
-import { recordAuditLog } from "@/lib/audit";
+import { recordAuditLog, getClientIp } from "@/lib/audit";
 
 const updateAssessmentSchema = z.object({
   title: z.string().trim().min(1).max(200).optional(),
@@ -45,6 +45,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     action: "ASSESSMENT_UPDATED",
     entityType: "Assessment",
     entityId: id,
+    ipAddress: getClientIp(req.headers),
   });
 
   return NextResponse.json({ assessment: updated });

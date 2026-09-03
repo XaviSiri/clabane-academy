@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { getAuthorizedSession } from "@/lib/auth/rbac";
 import { getStorageService } from "@/lib/storage";
 import { z } from "zod";
-import { recordAuditLog } from "@/lib/audit";
+import { recordAuditLog, getClientIp } from "@/lib/audit";
 
 const updateDocumentSchema = z.object({
   title: z.string().trim().min(1).max(200).optional(),
@@ -26,10 +26,21 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (!doc) return NextResponse.json({ error: "Document not found." }, { status: 404 });
 
   const updated = await prisma.document.update({ where: { id }, data: parsed.data });
+
+  if (parsed.data.isPublished !== undefined && parsed.data.isPublished !== doc.isPublished) {
+    await recordAuditLog({
+      userId: auth.session.sub,
+      action: parsed.data.isPublished ? "DOCUMENT_PUBLISHED" : "DOCUMENT_UNPUBLISHED",
+      entityType: "Document",
+      entityId: id,
+      ipAddress: getClientIp(req.headers),
+    });
+  }
+
   return NextResponse.json({ document: { ...updated, fileSizeBytes: updated.fileSizeBytes?.toString() } });
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = await getAuthorizedSession(["ADMIN"]);
   if ("error" in auth) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
@@ -47,6 +58,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     entityType: "Document",
     entityId: id,
     metadata: { title: doc.title },
+    ipAddress: getClientIp(req.headers),
   });
 
   return NextResponse.json({ ok: true });

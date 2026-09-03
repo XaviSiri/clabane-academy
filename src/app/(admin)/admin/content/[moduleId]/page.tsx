@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { LessonManager } from "@/components/admin/LessonManager";
+import { ModuleEditPanel } from "@/components/admin/ModuleEditPanel";
 
 export default async function ModuleDetailPage({ params }: { params: Promise<{ moduleId: string }> }) {
   const { moduleId } = await params;
@@ -16,10 +17,7 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ m
       <Link href="/admin/content" className="text-sm text-slate-500 hover:text-slate-700">
         ← Back to content
       </Link>
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900">{module_.title}</h1>
-        <p className="text-sm text-slate-500">{module_.description || "[INSERT MODULE DESCRIPTION]"}</p>
-      </div>
+      <ModuleEditPanel module={module_} />
 
       <div className="card">
         <div className="flex items-center justify-between">

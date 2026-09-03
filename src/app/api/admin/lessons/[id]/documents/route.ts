@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { getAuthorizedSession } from "@/lib/auth/rbac";
 import { getStorageService } from "@/lib/storage";
 import { createDocumentSchema } from "@/lib/validation/content";
-import { recordAuditLog } from "@/lib/audit";
+import { recordAuditLog, getClientIp } from "@/lib/audit";
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = await getAuthorizedSession(["ADMIN"]);
@@ -40,6 +40,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     entityType: "Document",
     entityId: document.id,
     metadata: { lessonId, title: document.title },
+    ipAddress: getClientIp(req.headers),
   });
 
   return NextResponse.json(

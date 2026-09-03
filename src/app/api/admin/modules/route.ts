@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getAuthorizedSession } from "@/lib/auth/rbac";
 import { createModuleSchema } from "@/lib/validation/content";
-import { recordAuditLog } from "@/lib/audit";
+import { recordAuditLog, getClientIp } from "@/lib/audit";
 
 export async function GET() {
   const auth = await getAuthorizedSession(["ADMIN"]);
@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
     entityType: "Module",
     entityId: module_.id,
     metadata: { title: module_.title },
+    ipAddress: getClientIp(req.headers),
   });
 
   return NextResponse.json({ module: module_ }, { status: 201 });

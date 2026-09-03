@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { getAuthorizedSession } from "@/lib/auth/rbac";
 import { getStorageService } from "@/lib/storage";
 import { replaceVideoSchema } from "@/lib/validation/content";
-import { recordAuditLog } from "@/lib/audit";
+import { recordAuditLog, getClientIp } from "@/lib/audit";
 
 /**
  * Step 2 of a replace: the new file has already been uploaded (via the same
@@ -45,6 +45,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     action: "VIDEO_REPLACED",
     entityType: "Video",
     entityId: id,
+    ipAddress: getClientIp(req.headers),
   });
 
   return NextResponse.json({ video: { ...updated, fileSizeBytes: updated.fileSizeBytes?.toString() } });

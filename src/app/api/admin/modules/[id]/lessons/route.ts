@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getAuthorizedSession } from "@/lib/auth/rbac";
 import { createLessonSchema } from "@/lib/validation/content";
-import { recordAuditLog } from "@/lib/audit";
+import { recordAuditLog, getClientIp } from "@/lib/audit";
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = await getAuthorizedSession(["ADMIN"]);
@@ -33,6 +33,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     entityType: "Lesson",
     entityId: lesson.id,
     metadata: { moduleId, title: lesson.title },
+    ipAddress: getClientIp(req.headers),
   });
 
   return NextResponse.json({ lesson }, { status: 201 });

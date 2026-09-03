@@ -20,6 +20,14 @@ function formatBytes(bytes: string | null): string {
   return `${(n / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function formatDuration(seconds: number | null): string {
+  if (!seconds) return "duration unknown";
+  if (seconds < 60) return `${seconds} sec`;
+  const minutes = Math.floor(seconds / 60);
+  const remainder = seconds % 60;
+  return remainder ? `${minutes} min ${remainder} sec` : `${minutes} min`;
+}
+
 function getVideoDuration(file: File): Promise<number | undefined> {
   return new Promise((resolve) => {
     const video = document.createElement("video");
@@ -88,6 +96,9 @@ export function VideoManager({ lessonId, initialVideos }: { lessonId: string; in
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [previewingId, setPreviewingId] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewError, setPreviewError] = useState<string | null>(null);
 
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault();
@@ -132,10 +143,35 @@ export function VideoManager({ lessonId, initialVideos }: { lessonId: string; in
     if (res.ok) setVideos((prev) => prev.map((v) => (v.id === video.id ? data.video : v)));
   }
 
+  async function togglePreview(videoId: string) {
+    if (previewingId === videoId) {
+      setPreviewingId(null);
+      setPreviewUrl(null);
+      return;
+    }
+    setPreviewError(null);
+    setPreviewUrl(null);
+    setPreviewingId(videoId);
+    try {
+      const res = await fetch(`/api/employee/videos/${videoId}/stream-url`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Unable to load preview.");
+      setPreviewUrl(data.url);
+    } catch (err) {
+      setPreviewError(err instanceof Error ? err.message : "Unable to load preview.");
+    }
+  }
+
   async function handleDelete(videoId: string) {
     if (!confirm("Delete this video? This removes it from storage and cannot be undone.")) return;
     const res = await fetch(`/api/admin/videos/${videoId}`, { method: "DELETE" });
-    if (res.ok) setVideos((prev) => prev.filter((v) => v.id !== videoId));
+    if (res.ok) {
+      setVideos((prev) => prev.filter((v) => v.id !== videoId));
+      if (previewingId === videoId) {
+        setPreviewingId(null);
+        setPreviewUrl(null);
+      }
+    }
   }
 
   async function handleReplace(videoId: string, replaceFile: File) {
@@ -157,6 +193,10 @@ export function VideoManager({ lessonId, initialVideos }: { lessonId: string; in
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Unable to replace video.");
       setVideos((prev) => prev.map((v) => (v.id === videoId ? data.video : v)));
+      if (previewingId === videoId) {
+        setPreviewingId(null);
+        setPreviewUrl(null);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Replace failed.");
     } finally {
@@ -175,15 +215,17 @@ export function VideoManager({ lessonId, initialVideos }: { lessonId: string; in
               <div>
                 <p className="text-sm font-medium text-slate-900">{video.title}</p>
                 <p className="text-xs text-slate-500">
-                  {formatBytes(video.fileSizeBytes)} ·{" "}
-                  {video.durationSeconds ? `${Math.round(video.durationSeconds / 60)} min` : "duration unknown"} ·
-                  completes at {video.completionThresholdPercent}%
+                  {formatBytes(video.fileSizeBytes)} · {formatDuration(video.durationSeconds)} · completes at{" "}
+                  {video.completionThresholdPercent}%
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <span className={video.isPublished ? "badge-completed" : "badge-not-started"}>
                   {video.isPublished ? "Published" : "Draft"}
                 </span>
+                <button className="btn-secondary text-xs" onClick={() => togglePreview(video.id)}>
+                  {previewingId === video.id ? "Hide preview" : "Preview"}
+                </button>
                 <button className="btn-secondary text-xs" onClick={() => togglePublish(video)}>
                   {video.isPublished ? "Unpublish" : "Publish"}
                 </button>
@@ -192,6 +234,15 @@ export function VideoManager({ lessonId, initialVideos }: { lessonId: string; in
                 </button>
               </div>
             </div>
+            {previewingId === video.id && (
+              <div className="max-w-md">
+                {previewError && <p className="text-xs text-red-600">{previewError}</p>}
+                {previewUrl && (
+                  <video src={previewUrl} controls className="aspect-video w-full rounded-md bg-black" />
+                )}
+                {!previewUrl && !previewError && <p className="text-xs text-slate-400">Loading preview…</p>}
+              </div>
+            )}
             <label className="block text-xs text-slate-500">
               Replace file:{" "}
               <input

@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getAuthorizedSession } from "@/lib/auth/rbac";
 import { updateLessonSchema } from "@/lib/validation/content";
-import { recordAuditLog } from "@/lib/audit";
+import { recordAuditLog, getClientIp } from "@/lib/audit";
+import { deleteStorageObjectsFor } from "@/lib/services/content-cleanup";
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = await getAuthorizedSession(["ADMIN"]);
@@ -25,16 +26,32 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     action: "LESSON_UPDATED",
     entityType: "Lesson",
     entityId: id,
+    ipAddress: getClientIp(req.headers),
   });
 
   return NextResponse.json({ lesson: updated });
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = await getAuthorizedSession(["ADMIN"]);
   if ("error" in auth) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   const { id } = await params;
+  const lesson = await prisma.lesson.findUnique({
+    where: { id },
+    include: { videos: true, documents: true },
+  });
+  if (!lesson) return NextResponse.json({ error: "Lesson not found." }, { status: 404 });
+
+  await deleteStorageObjectsFor([...lesson.videos, ...lesson.documents]);
   await prisma.lesson.delete({ where: { id } });
+  await recordAuditLog({
+    userId: auth.session.sub,
+    action: "LESSON_UPDATED",
+    entityType: "Lesson",
+    entityId: id,
+    metadata: { deleted: true, title: lesson.title },
+    ipAddress: getClientIp(req.headers),
+  });
   return NextResponse.json({ ok: true });
 }

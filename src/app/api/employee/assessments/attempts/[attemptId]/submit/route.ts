@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getAuthorizedSession } from "@/lib/auth/rbac";
 import { submitAssessmentAttempt, AssessmentError } from "@/lib/services/assessment";
+import { getClientIp } from "@/lib/audit";
 
 const submitSchema = z.object({
   answers: z.array(z.object({ questionId: z.string(), selectedOptionId: z.string() })),
@@ -21,6 +22,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ att
       employeeId: auth.session.sub,
       attemptId,
       answers: parsed.data.answers,
+      ipAddress: getClientIp(req.headers),
     });
     return NextResponse.json(result);
   } catch (err) {

@@ -66,6 +66,7 @@ export async function submitAssessmentAttempt(params: {
   employeeId: string;
   attemptId: string;
   answers: SubmittedAnswer[];
+  ipAddress?: string | null;
 }) {
   const attempt = await prisma.assessmentAttempt.findUnique({
     where: { id: params.attemptId },
@@ -129,6 +130,7 @@ export async function submitAssessmentAttempt(params: {
     entityType: "Assessment",
     entityId: attempt.assessmentId,
     metadata: { attemptNumber: attempt.attemptNumber, scorePercent, passed },
+    ipAddress: params.ipAddress,
   });
 
   if (passed) {
@@ -146,7 +148,7 @@ export async function submitAssessmentAttempt(params: {
       },
     });
 
-    await checkAndIssueCertificate(params.employeeId);
+    await checkAndIssueCertificate(params.employeeId, params.ipAddress);
   } else {
     await prisma.moduleProgress.upsert({
       where: {

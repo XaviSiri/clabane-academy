@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { getAuthorizedSession } from "@/lib/auth/rbac";
 import { getStorageService } from "@/lib/storage";
 import { createVideoSchema } from "@/lib/validation/content";
-import { recordAuditLog } from "@/lib/audit";
+import { recordAuditLog, getClientIp } from "@/lib/audit";
 
 /** Step 2 of the upload flow: persist metadata once the object exists in storage. */
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -45,6 +45,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     entityType: "Video",
     entityId: video.id,
     metadata: { lessonId, title: video.title },
+    ipAddress: getClientIp(req.headers),
   });
 
   return NextResponse.json({ video: { ...video, fileSizeBytes: video.fileSizeBytes?.toString() } }, { status: 201 });

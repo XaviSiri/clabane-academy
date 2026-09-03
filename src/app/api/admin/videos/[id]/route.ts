@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { getAuthorizedSession } from "@/lib/auth/rbac";
 import { getStorageService } from "@/lib/storage";
 import { updateVideoSchema } from "@/lib/validation/content";
-import { recordAuditLog } from "@/lib/audit";
+import { recordAuditLog, getClientIp } from "@/lib/audit";
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = await getAuthorizedSession(["ADMIN"]);
@@ -27,6 +27,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       action: parsed.data.isPublished ? "VIDEO_PUBLISHED" : "VIDEO_UNPUBLISHED",
       entityType: "Video",
       entityId: id,
+      ipAddress: getClientIp(req.headers),
     });
   }
 
@@ -37,7 +38,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
  *  failed delete never leaves a dangling DB reference to a missing file —
  *  and a retry after a partial failure cannot orphan the object either,
  *  since deleteObject is a no-op when the object is already gone. */
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = await getAuthorizedSession(["ADMIN"]);
   if ("error" in auth) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
@@ -59,6 +60,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     entityType: "Video",
     entityId: id,
     metadata: { title: video.title },
+    ipAddress: getClientIp(req.headers),
   });
 
   return NextResponse.json({ ok: true });

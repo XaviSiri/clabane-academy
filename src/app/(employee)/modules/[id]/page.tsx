@@ -75,9 +75,9 @@ export default async function ModulePage({ params }: { params: Promise<{ id: str
           {attempts.length > 0 && (
             <ul className="mb-3 space-y-1 text-xs text-slate-500">
               {attempts.map((a) => (
-                <li key={a.id}>
-                  Attempt {a.attemptNumber}: {a.scorePercent ?? "—"}%{" "}
-                  {a.status !== "IN_PROGRESS" && <StatusBadge status={a.status} />}
+                <li key={a.id} className="flex items-center gap-2">
+                  Attempt {a.attemptNumber}: {a.scorePercent ?? "—"}%
+                  <StatusBadge status={a.status} />
                 </li>
               ))}
             </ul>
@@ -86,7 +86,11 @@ export default async function ModulePage({ params }: { params: Promise<{ id: str
             <span className="badge-completed">Assessment passed</span>
           ) : allLessonsComplete ? (
             <Link href={`/assessments/${module_.assessment.id}`} className="btn-primary">
-              {attempts.length > 0 ? "Retake assessment" : "Start assessment"}
+              {attempts.some((a) => a.status === "IN_PROGRESS")
+                ? "Continue assessment"
+                : attempts.some((a) => a.status === "FAILED")
+                  ? "Retake assessment"
+                  : "Start assessment"}
             </Link>
           ) : (
             <button disabled className="btn-secondary cursor-not-allowed opacity-50">

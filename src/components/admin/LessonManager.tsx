@@ -17,6 +17,8 @@ export function LessonManager({ moduleId, initialLessons }: { moduleId: string; 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -49,6 +51,34 @@ export function LessonManager({ moduleId, initialLessons }: { moduleId: string; 
     }
   }
 
+  function startEditing(lesson: Lesson) {
+    setEditingId(lesson.id);
+    setEditTitle(lesson.title);
+  }
+
+  async function saveEdit(lessonId: string) {
+    const res = await fetch(`/api/admin/lessons/${lessonId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: editTitle }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setLessons((prev) => prev.map((l) => (l.id === lessonId ? data.lesson : l)));
+      setEditingId(null);
+    }
+  }
+
+  async function handleDelete(lesson: Lesson) {
+    if (
+      !confirm(`Delete "${lesson.title}"? This removes its videos and documents from storage and cannot be undone.`)
+    ) {
+      return;
+    }
+    const res = await fetch(`/api/admin/lessons/${lesson.id}`, { method: "DELETE" });
+    if (res.ok) setLessons((prev) => prev.filter((l) => l.id !== lesson.id));
+  }
+
   return (
     <div className="card space-y-4">
       <div className="flex items-center justify-between">
@@ -77,21 +107,46 @@ export function LessonManager({ moduleId, initialLessons }: { moduleId: string; 
 
       <ul className="divide-y divide-slate-100">
         {lessons.map((lesson, idx) => (
-          <li key={lesson.id} className="flex items-center justify-between py-2">
-            <Link
-              href={`/admin/content/${moduleId}/lessons/${lesson.id}`}
-              className="text-sm font-medium text-[#0d1b3e] hover:underline"
-            >
-              {idx + 1}. {lesson.title}
-            </Link>
-            <div className="flex items-center gap-2">
-              <span className={lesson.isPublished ? "badge-completed" : "badge-not-started"}>
-                {lesson.isPublished ? "Published" : "Draft"}
-              </span>
-              <button className="btn-secondary text-xs" onClick={() => togglePublish(lesson)}>
-                {lesson.isPublished ? "Unpublish" : "Publish"}
-              </button>
-            </div>
+          <li key={lesson.id} className="flex items-center justify-between gap-3 py-2">
+            {editingId === lesson.id ? (
+              <div className="flex flex-1 items-center gap-2">
+                <input
+                  className="input-field flex-1"
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  autoFocus
+                />
+                <button className="btn-primary text-xs" onClick={() => saveEdit(lesson.id)}>
+                  Save
+                </button>
+                <button className="btn-secondary text-xs" onClick={() => setEditingId(null)}>
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <Link
+                href={`/admin/content/${moduleId}/lessons/${lesson.id}`}
+                className="flex-1 text-sm font-medium text-[#0d1b3e] hover:underline"
+              >
+                {idx + 1}. {lesson.title}
+              </Link>
+            )}
+            {editingId !== lesson.id && (
+              <div className="flex items-center gap-2">
+                <span className={lesson.isPublished ? "badge-completed" : "badge-not-started"}>
+                  {lesson.isPublished ? "Published" : "Draft"}
+                </span>
+                <button className="btn-secondary text-xs" onClick={() => togglePublish(lesson)}>
+                  {lesson.isPublished ? "Unpublish" : "Publish"}
+                </button>
+                <button className="btn-secondary text-xs" onClick={() => startEditing(lesson)}>
+                  Rename
+                </button>
+                <button className="btn-danger text-xs" onClick={() => handleDelete(lesson)}>
+                  Delete
+                </button>
+              </div>
+            )}
           </li>
         ))}
         {lessons.length === 0 && <p className="py-2 text-sm text-slate-500">No lessons yet.</p>}

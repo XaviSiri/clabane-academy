@@ -23,7 +23,7 @@ async function generateCertificateNo(): Promise<string> {
  * and never before. Idempotent: calling this repeatedly for an employee who
  * already has a certificate is a no-op.
  */
-export async function checkAndIssueCertificate(employeeId: string) {
+export async function checkAndIssueCertificate(employeeId: string, ipAddress?: string | null) {
   const existing = await prisma.certificate.findFirst({ where: { employeeId } });
   if (existing) return existing;
 
@@ -80,6 +80,7 @@ export async function checkAndIssueCertificate(employeeId: string) {
     entityType: "Certificate",
     entityId: certificate.id,
     metadata: { certificateNo },
+    ipAddress,
   });
 
   return certificate;

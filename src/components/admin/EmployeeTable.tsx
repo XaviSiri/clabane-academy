@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { CreateEmployeeModal } from "./CreateEmployeeModal";
 
@@ -17,12 +17,26 @@ interface Employee {
   hasCertificate: boolean;
 }
 
+type SortKey = "fullName" | "email" | "department" | "startDate" | "status" | "completedModules" | "lastLoginAt";
+
+const COLUMNS: { key: SortKey; label: string }[] = [
+  { key: "fullName", label: "Name" },
+  { key: "email", label: "Email" },
+  { key: "department", label: "Department" },
+  { key: "startDate", label: "Start Date" },
+  { key: "status", label: "Status" },
+  { key: "completedModules", label: "Modules Completed" },
+  { key: "lastLoginAt", label: "Last Activity" },
+];
+
 export function EmployeeTable() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [q, setQ] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
+  const [sortKey, setSortKey] = useState<SortKey>("fullName");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -39,6 +53,26 @@ export function EmployeeTable() {
     const timer = setTimeout(load, 250);
     return () => clearTimeout(timer);
   }, [load]);
+
+  function handleSort(key: SortKey) {
+    if (key === sortKey) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  }
+
+  const sortedEmployees = useMemo(() => {
+    const copy = [...employees];
+    copy.sort((a, b) => {
+      const av = a[sortKey] ?? "";
+      const bv = b[sortKey] ?? "";
+      const cmp = typeof av === "number" && typeof bv === "number" ? av - bv : String(av).localeCompare(String(bv));
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+    return copy;
+  }, [employees, sortKey, sortDir]);
 
   return (
     <div className="space-y-4">
@@ -66,17 +100,24 @@ export function EmployeeTable() {
         <table className="min-w-full divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
             <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Email</th>
-              <th className="px-4 py-3">Department</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Modules</th>
+              {COLUMNS.map((col) => (
+                <th key={col.key} className="px-4 py-3">
+                  <button
+                    type="button"
+                    className="flex items-center gap-1 hover:text-slate-700"
+                    onClick={() => handleSort(col.key)}
+                  >
+                    {col.label}
+                    {sortKey === col.key && <span aria-hidden>{sortDir === "asc" ? "▲" : "▼"}</span>}
+                  </button>
+                </th>
+              ))}
+              <th className="px-4 py-3">Role</th>
               <th className="px-4 py-3">Certificate</th>
-              <th className="px-4 py-3">Last Activity</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {employees.map((e) => (
+            {sortedEmployees.map((e) => (
               <tr key={e.id} className="hover:bg-slate-50">
                 <td className="px-4 py-3">
                   <Link href={`/admin/employees/${e.id}`} className="font-medium text-[#0d1b3e] hover:underline">
@@ -85,19 +126,23 @@ export function EmployeeTable() {
                 </td>
                 <td className="px-4 py-3 text-slate-600">{e.email}</td>
                 <td className="px-4 py-3 text-slate-600">{e.department || "—"}</td>
+                <td className="px-4 py-3 text-slate-500">
+                  {e.startDate ? new Date(e.startDate).toLocaleDateString("en-GB") : "—"}
+                </td>
                 <td className="px-4 py-3">
                   <StatusPill status={e.status} />
                 </td>
                 <td className="px-4 py-3 text-slate-600">{e.completedModules}</td>
-                <td className="px-4 py-3 text-slate-600">{e.hasCertificate ? "Issued" : "—"}</td>
                 <td className="px-4 py-3 text-slate-500">
                   {e.lastLoginAt ? new Date(e.lastLoginAt).toLocaleDateString("en-GB") : "Never"}
                 </td>
+                <td className="px-4 py-3 text-slate-500">Employee</td>
+                <td className="px-4 py-3 text-slate-600">{e.hasCertificate ? "Issued" : "—"}</td>
               </tr>
             ))}
-            {!loading && employees.length === 0 && (
+            {!loading && sortedEmployees.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-slate-500">
+                <td colSpan={9} className="px-4 py-8 text-center text-slate-500">
                   No employees found.
                 </td>
               </tr>
