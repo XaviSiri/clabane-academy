@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { LessonVideoBlock } from "@/components/LessonVideoBlock";
 import { DocumentLink } from "@/components/DocumentLink";
 import { MarkLessonComplete } from "@/components/MarkLessonComplete";
+import { LessonContent } from "@/components/LessonContent";
 
 export default async function LessonPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await requireEmployee();
@@ -41,9 +42,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
 
       {lesson.content && (
         <div className="card">
-          <div className="prose prose-slate max-w-none whitespace-pre-wrap text-sm text-slate-700">
-            {lesson.content}
-          </div>
+          <LessonContent content={lesson.content} />
         </div>
       )}
 

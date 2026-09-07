@@ -192,6 +192,32 @@ describe("assessment engine", () => {
       })
     ).rejects.toThrow(AssessmentError);
   });
+
+  // Regression test: two near-simultaneous calls to start an assessment
+  // (a double-click, a retried request, React StrictMode's dev-mode double
+  // effect invocation) can both read "no in-progress attempt yet" before
+  // either write commits, and both try to insert the same attemptNumber —
+  // the loser used to surface as an unhandled 500 instead of just handing
+  // back the winner's attempt.
+  it("handles two concurrent start calls without throwing an unhandled error", async () => {
+    const { user: admin } = await createAdmin();
+    const { user: employee } = await createEmployee();
+    const { lesson, assessment } = await createPublishedModuleWithAssessment({ adminId: admin.id });
+    await markLessonComplete(employee.id, lesson.id);
+
+    const [first, second] = await Promise.all([
+      startAssessmentAttempt(employee.id, assessment.id),
+      startAssessmentAttempt(employee.id, assessment.id),
+    ]);
+
+    expect(first.id).toBe(second.id);
+    expect(first.attemptNumber).toBe(1);
+
+    const attempts = await prisma.assessmentAttempt.findMany({
+      where: { employeeId: employee.id, assessmentId: assessment.id },
+    });
+    expect(attempts).toHaveLength(1);
+  });
 });
 
 describe("certification", () => {

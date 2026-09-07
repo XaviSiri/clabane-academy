@@ -25,6 +25,10 @@ export function LessonContentEditor({ lessonId, initialContent }: { lessonId: st
   return (
     <div className="card space-y-3">
       <h2 className="text-sm font-medium text-slate-700">Lesson Content</h2>
+      <p className="text-xs text-slate-500">
+        Supports simple formatting: <code># Heading</code>, <code>## Subheading</code>, <code>- bullet</code>,{" "}
+        <code>&gt; callout / key takeaway</code>, and <code>**bold**</code>. Blank lines start a new paragraph.
+      </p>
       <textarea
         className="input-field min-h-[200px] font-mono text-xs"
         value={content}

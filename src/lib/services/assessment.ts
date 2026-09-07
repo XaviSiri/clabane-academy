@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { areAllLessonsComplete } from "./progress";
 import { checkAndIssueCertificate } from "./certificate";
@@ -45,14 +46,31 @@ export async function startAssessmentAttempt(employeeId: string, assessmentId: s
     return lastAttempt;
   }
 
-  return prisma.assessmentAttempt.create({
-    data: {
-      employeeId,
-      assessmentId,
-      attemptNumber: (lastAttempt?.attemptNumber ?? 0) + 1,
-      status: "IN_PROGRESS",
-    },
-  });
+  try {
+    return await prisma.assessmentAttempt.create({
+      data: {
+        employeeId,
+        assessmentId,
+        attemptNumber: (lastAttempt?.attemptNumber ?? 0) + 1,
+        status: "IN_PROGRESS",
+      },
+    });
+  } catch (err) {
+    // Two near-simultaneous requests (a double-click, a retried request, a
+    // second browser tab) can both read "no in-progress attempt yet" before
+    // either has committed, and then both try to insert the same
+    // attemptNumber — the loser hits the (assessmentId, employeeId,
+    // attemptNumber) unique constraint. Rather than surface that as a 500,
+    // re-read what actually landed and return it: the winner's attempt.
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      const existing = await prisma.assessmentAttempt.findFirst({
+        where: { employeeId, assessmentId },
+        orderBy: { attemptNumber: "desc" },
+      });
+      if (existing) return existing;
+    }
+    throw err;
+  }
 }
 
 interface SubmittedAnswer {

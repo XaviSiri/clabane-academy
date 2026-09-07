@@ -72,6 +72,23 @@ This creates:
   facts are invented, per the platform's content policy. Administrators
   replace these through Content Management.
 
+### Populating real Clabane content
+
+The seed data above is generic placeholder content for a fresh install. To
+replace it with the actual researched Clabane content (real product names,
+returns policy, founder story, etc.):
+
+```bash
+npx tsx scripts/populate-clabane-content.ts
+```
+
+See [`CONTENT-SOURCES.md`](./CONTENT-SOURCES.md) for exactly what's real,
+what's a `[CLABANE INTERNAL POLICY REQUIRED]` placeholder, which
+clabane.com pages were used, and what this script resets (employee
+progress/certificates tied to the old content). This is a one-time
+population step, not a replacement for editing content through the admin
+UI afterward.
+
 ## Running locally
 
 ```bash
