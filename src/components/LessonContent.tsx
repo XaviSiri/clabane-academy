@@ -115,7 +115,7 @@ export function LessonContent({ content }: { content: string }) {
       blocks.push(
         <div
           key={`callout-${blockKey++}`}
-          className="my-3 rounded-md border-l-4 border-[#b8944f] bg-amber-50/60 px-4 py-2 text-slate-700"
+          className="my-3 rounded-md border-l-4 border-[var(--clabane-gold)] bg-amber-50/60 px-4 py-2 text-slate-700"
         >
           {renderInline(text, `callout-${blockKey}`)}
         </div>

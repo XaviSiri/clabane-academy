@@ -120,7 +120,7 @@ export function EmployeeTable() {
             {sortedEmployees.map((e) => (
               <tr key={e.id} className="hover:bg-slate-50">
                 <td className="px-4 py-3">
-                  <Link href={`/admin/employees/${e.id}`} className="font-medium text-[#0d1b3e] hover:underline">
+                  <Link href={`/admin/employees/${e.id}`} className="font-medium text-[var(--clabane-accent)] hover:underline">
                     {e.fullName || "—"}
                   </Link>
                 </td>

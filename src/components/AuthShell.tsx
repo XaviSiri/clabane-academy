@@ -11,7 +11,7 @@ export function AuthShell({
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-[#0d1b3e] text-lg font-bold text-white">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--clabane-primary)] text-lg font-bold text-white">
             CA
           </div>
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Clabane Academy</h1>

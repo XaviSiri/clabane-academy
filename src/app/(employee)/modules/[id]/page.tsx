@@ -53,7 +53,7 @@ export default async function ModulePage({ params }: { params: Promise<{ id: str
         <ul className="divide-y divide-slate-100">
           {module_.lessons.map((lesson, idx) => (
             <li key={lesson.id} className="flex items-center justify-between py-3">
-              <Link href={`/lessons/${lesson.id}`} className="flex-1 text-sm font-medium text-slate-900 hover:text-[#0d1b3e]">
+              <Link href={`/lessons/${lesson.id}`} className="flex-1 text-sm font-medium text-slate-900 hover:text-[var(--clabane-accent)]">
                 {idx + 1}. {lesson.title}
               </Link>
               <StatusBadge status={progressByLesson.get(lesson.id) ?? "NOT_STARTED"} />

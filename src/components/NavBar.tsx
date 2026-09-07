@@ -26,7 +26,7 @@ export function NavBar({ links, roleLabel }: { links: NavLink[]; roleLabel: stri
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-8">
           <span className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#0d1b3e] text-xs font-bold text-white">
+            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--clabane-primary)] text-xs font-bold text-white">
               CA
             </span>
             Clabane Academy
@@ -39,8 +39,10 @@ export function NavBar({ links, roleLabel }: { links: NavLink[]; roleLabel: stri
                   key={link.href}
                   href={link.href}
                   className={clsx(
-                    "rounded-md px-3 py-2 text-sm font-medium",
-                    active ? "bg-slate-100 text-slate-900" : "text-slate-600 hover:text-slate-900"
+                    "rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wide",
+                    active
+                      ? "text-[var(--clabane-accent)]"
+                      : "text-slate-600 hover:text-[var(--clabane-accent)]"
                   )}
                 >
                   {link.label}
@@ -92,7 +94,7 @@ export function NavBar({ links, roleLabel }: { links: NavLink[]; roleLabel: stri
                   onClick={() => setMenuOpen(false)}
                   className={clsx(
                     "rounded-md px-3 py-2.5 text-sm font-medium",
-                    active ? "bg-slate-100 text-slate-900" : "text-slate-600"
+                    active ? "bg-slate-100 text-[var(--clabane-accent)]" : "text-slate-600"
                   )}
                 >
                   {link.label}

@@ -95,7 +95,7 @@ export function ModuleList() {
         {modules.map((mod) => (
           <div key={mod.id} className="card flex items-center justify-between">
             <div>
-              <Link href={`/admin/content/${mod.id}`} className="font-medium text-[#0d1b3e] hover:underline">
+              <Link href={`/admin/content/${mod.id}`} className="font-medium text-[var(--clabane-accent)] hover:underline">
                 {mod.title}
               </Link>
               <p className="text-xs text-slate-500">

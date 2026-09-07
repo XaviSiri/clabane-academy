@@ -15,10 +15,10 @@ export default async function CertificatePage() {
       {certificate ? (
         <div className="card space-y-4 text-center">
           <div className="rounded-md border-2 border-dashed border-amber-300 bg-amber-50 p-8">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#0d1b3e]">Clabane Academy</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-[var(--clabane-primary)]">Clabane Academy</p>
             <p className="mt-2 text-lg font-semibold text-slate-900">Certificate of Completion</p>
             <p className="mt-4 text-sm text-slate-600">This certifies that</p>
-            <p className="mt-1 text-xl font-semibold text-[#0d1b3e]">{user.profile?.fullName ?? user.email}</p>
+            <p className="mt-1 text-xl font-semibold text-[var(--clabane-primary)]">{user.profile?.fullName ?? user.email}</p>
             <p className="mt-1 text-sm text-slate-600">
               has successfully completed the Clabane Academy onboarding programme.
             </p>

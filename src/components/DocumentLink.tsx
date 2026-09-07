@@ -23,7 +23,7 @@ export function DocumentLink({ documentId, title }: { documentId: string; title:
 
   return (
     <div>
-      <button onClick={handleClick} disabled={loading} className="text-sm font-medium text-[#0d1b3e] underline hover:no-underline">
+      <button onClick={handleClick} disabled={loading} className="text-sm font-medium text-[var(--clabane-accent)] underline hover:no-underline">
         {loading ? "Preparing…" : `📄 ${title}`}
       </button>
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}

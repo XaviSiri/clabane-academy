@@ -282,7 +282,7 @@ export function VideoManager({ lessonId, initialVideos }: { lessonId: string; in
         </div>
         {progress !== null && (
           <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
-            <div className="h-full bg-[#0d1b3e] transition-all" style={{ width: `${progress}%` }} />
+            <div className="h-full bg-[var(--clabane-primary)] transition-all" style={{ width: `${progress}%` }} />
           </div>
         )}
         <button type="submit" disabled={progress !== null} className="btn-primary">

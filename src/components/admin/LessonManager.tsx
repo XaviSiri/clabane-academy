@@ -126,7 +126,7 @@ export function LessonManager({ moduleId, initialLessons }: { moduleId: string; 
             ) : (
               <Link
                 href={`/admin/content/${moduleId}/lessons/${lesson.id}`}
-                className="flex-1 text-sm font-medium text-[#0d1b3e] hover:underline"
+                className="flex-1 text-sm font-medium text-[var(--clabane-accent)] hover:underline"
               >
                 {idx + 1}. {lesson.title}
               </Link>

@@ -84,13 +84,27 @@ Clabane). Placeholders mark where Clabane-specific policy (password
 requirements for company systems, device policy, incident-reporting
 contact) needs to replace the general guidance.
 
-## Images
+## Images and visual identity
 
-**None were added.** Every image-fetch path — WebFetch, curl, a
-third-party brand-asset aggregator — hit the same network block. Rather
-than fabricate a Clabane visual identity (invent colors/typography and
-present them as "Clabane branding"), the Academy keeps its existing
-professional, brand-neutral styling.
+**No image files were added** — that constraint hasn't changed. Every
+image-fetch path (WebFetch, curl, a third-party brand-asset aggregator)
+hit the same network block, and a screenshot pasted into a chat message is
+visual-only: it cannot be extracted or saved as a binary asset in this
+environment, so it cannot become a logo file or product photo in the app.
+
+**The color palette and typography were updated**, based on a real
+screenshot of clabane.com's "Our Story" page that was shared directly in
+conversation and visually inspected (not fetched, not a fabricated guess).
+The placeholder navy (`#0d1b3e`) / gold (`#b8944f`) palette has been
+replaced with a warm terracotta brown primary (`#7a4023`) and a teal accent
+(`#1f7a70`), defined as CSS custom properties in `src/app/globals.css`
+(`--clabane-primary`, `--clabane-primary-dark`, `--clabane-accent`,
+`--clabane-gold`) and applied consistently across buttons, the nav logo
+badge, progress bars, links, and the certificate. The body font changed
+from Inter to Poppins (`src/app/layout.tsx`) for the rounder, friendlier
+look seen on the real site. Clabane's actual logo glyph/flourish was
+deliberately **not** reproduced — only color and type cues were carried
+over.
 
 **To add real Clabane imagery**: an administrator can upload the logo,
 product photography, and module hero images through the existing upload
@@ -98,8 +112,9 @@ features once the files are supplied — the video/document storage
 abstraction already used throughout the app is the right place for these;
 no new upload mechanism is needed. The most direct path is for someone with
 network access to download the assets from clabane.com and hand them to an
-admin (or attach them in a conversation with Claude, which can then upload
-them through the existing admin flows).
+admin (or attach them as real files — not an inline chat screenshot — in a
+conversation with Claude, which can then upload them through the existing
+admin flows).
 
 ## A rendering change this required
 
