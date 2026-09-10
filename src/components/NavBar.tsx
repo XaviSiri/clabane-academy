@@ -29,7 +29,12 @@ export function NavBar({ links, roleLabel }: { links: NavLink[]; roleLabel: stri
             <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--clabane-primary)] text-xs font-bold text-white">
               CA
             </span>
-            Clabane Academy
+            <span className="flex flex-col leading-tight">
+              Clabane Academy
+              <span className="hidden text-[10px] font-normal italic text-[var(--clabane-accent)] sm:inline">
+                We Love African Skin
+              </span>
+            </span>
           </span>
           <div className="hidden gap-1 sm:flex">
             {links.map((link) => {

@@ -3,13 +3,19 @@
 @tailwind utilities;
 
 :root {
-  /* Clabane brand palette — a warm terracotta/brown primary with a teal
-     accent, drawn from the real clabane.com "Our Story" hero (referenced
-     visually; no assets were extracted or copied from it). */
-  --clabane-primary: #7a4023;
-  --clabane-primary-dark: #5c2f19;
-  --clabane-accent: #1f7a70;
-  --clabane-gold: #c98a3e;
+  /* Clabane brand palette (nero / water leaf / verdun green), confirmed by
+     Clabane management. --clabane-primary and --clabane-accent both map to
+     verdun green (it's the only one of the three with enough contrast
+     against white for text/buttons); water leaf is used only as a
+     decorative highlight/border where contrast isn't a concern. */
+  --clabane-nero: #0f0900;
+  --clabane-water-leaf: #a8e8e2;
+  --clabane-verdun-green: #576a02;
+
+  --clabane-primary: var(--clabane-verdun-green);
+  --clabane-primary-dark: #3d4a01;
+  --clabane-accent: var(--clabane-verdun-green);
+  --clabane-highlight: var(--clabane-water-leaf);
 }
 
 body {

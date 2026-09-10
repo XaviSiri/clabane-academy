@@ -15,6 +15,7 @@ export function AuthShell({
             CA
           </div>
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Clabane Academy</h1>
+          <p className="mt-1 text-sm italic text-[var(--clabane-accent)]">We Love African Skin</p>
           {subtitle && <p className="mt-1 text-sm text-slate-500">{subtitle}</p>}
         </div>
         <div className="card">

@@ -193,6 +193,11 @@ Clabane was created to fill a gap in the skincare market: there was no dedicated
 ## The Science Behind It
 African skin has a higher concentration of melanin and can behave differently to other skin types because of genetic makeup and climate — particularly when the skin is sensitive. Clabane's products are formulated by African dermatologists, using world-class standards and natural ingredients, to meet these specific needs.
 
+## Confirmed Company Facts
+- All Clabane products are **SGS certified** — safe and gentle, with no side effects
+- Clabane is the most recommended sensitive skincare brand by doctors and pharmacists in East Africa
+- Clabane also operates in hair care, through the **Clabane Hair Series**, formulated for African hair needs
+
 ## Read the Full Story
 This is a summary. For the complete story in Clabane's own words, visit clabane.com/pages/our-story.
 
@@ -229,7 +234,7 @@ As a Clabane employee, understanding this "why" helps you:
     content: `# Our Mission and Purpose
 
 ## Our Mission
-Clabane's mission is to harness the power of nature to heal, nourish, nurture, and protect sensitive skin — ultimately improving the quality of life of the people who use our products.
+> "We harness nature to develop solutions that heal, nourish, nurture and protect sensitive skin for a better quality of life."
 
 ## What This Means Day to Day
 - **Heal**: helping resolve skin concerns like acne, pigmentation, and eczema
@@ -237,50 +242,45 @@ Clabane's mission is to harness the power of nature to heal, nourish, nurture, a
 - **Nurture**: caring for skin over the long term, not just a "quick fix"
 - **Protect**: shielding skin from damage, for example sun protection
 
-## Our Purpose
-Clabane is positioned as a leading dermatologist-developed skincare brand in Africa dedicated to sensitive skin. Every product decision should be measured against this purpose: does it genuinely help someone with sensitive skin feel and look healthier?
+## Our Vision
+To be the leading cosmeceutical brand for sensitive African skin — providing unique care that celebrates the beauty of African skin in its varied shades, textures, and needs.
 
-> Key takeaway: Clabane's mission isn't just about selling skincare — it's about improving quality of life through healthier skin.
-
-[CLABANE INTERNAL POLICY REQUIRED: If Clabane has a separate, formally published Vision Statement distinct from this mission, please provide it here so employees can learn the exact wording.]`,
+> Key takeaway: Clabane's mission isn't just about selling skincare — it's about improving quality of life through healthier skin.`,
   },
   {
     slug: "our-values",
     title: "Our Values",
     content: `# Our Values
 
-Based on Clabane's public materials, the following themes come through clearly in how the brand talks about itself and its products.
+Clabane's core values guide how the brand formulates products and treats customers.
 
-## Skin Health Affects Wellbeing
-Clabane recognises that skin isn't "just skin" — it affects how people feel, not only how they look. When skin is healthy, people feel better too. This is why Clabane focuses on sensitive skin specifically: getting it right matters to real people's confidence and comfort.
+## Our Core Values
+- **Safety First** — all products are SGS certified, safe, and gentle, with no side effects
+- **Authenticity** — formulations are created by African dermatologists using world-class standards
+- **Excellence** — commitment to excellence in customer service, prioritising each client's unique needs
+- **Community** — committed to giving back and promoting skin health education
+- **Natural Innovation** — harnessing nature to develop healing solutions
 
-## Science and Nature Together
-Clabane combines premium natural ingredients sourced from around the world with formulations backed by dermatological science — not natural ingredients alone, and not synthetic formulation alone.
-
-## Built by Experts, for a Specific Need
-Clabane's products are formulated by African dermatologists, not a generic skincare lab. This expert-led approach is a value in itself: getting the formulation right for the people it's meant for.
-
-> Key takeaway: Clabane's values centre on taking sensitive skin seriously, combining science with nature, and trusting dermatologist expertise.
-
-[CLABANE INTERNAL POLICY REQUIRED: If Clabane has a formal, published list of company values used in internal training, please provide the exact wording here to replace or supplement the themes above.]`,
+> Key takeaway: Clabane's values centre on taking sensitive skin seriously, combining science with nature, and trusting dermatologist expertise.`,
   },
   {
     slug: "our-culture",
     title: "Our Culture",
     content: `# Our Culture
 
-Clabane's public materials don't describe an internal company culture in detail — that's something you'll experience directly as part of the team, and something your manager will help introduce during onboarding.
+## Customer-Centric
+Clabane keeps our customers at the heart of everything we do. That principle should guide every interaction you have, whether you're formulating, selling, or supporting.
 
-## What We Can Say With Confidence
-From how Clabane presents itself publicly, a few things are consistent:
-- A genuine focus on solving a real skin health problem, not just selling products
-- Pride in expert, dermatologist-led formulation
-- A customer base that is often dealing with sensitive or reactive skin, which calls for empathy and care in every interaction
+## Team Appreciation
+Clabane values celebrating its team and recognising the people behind the brand.
+
+## Passion for African Skin Health
+Culturally, Clabane is driven by a genuine passion for African skin health and education — not just selling products.
 
 ## What to Expect
-[CLABANE INTERNAL POLICY REQUIRED: Please describe Clabane's day-to-day working culture — for example how teams collaborate, company traditions, communication style, and what new employees should expect in their first weeks.]
+[CLABANE INTERNAL POLICY REQUIRED: Please describe the day-to-day mechanics of Clabane's working culture — for example how teams collaborate, company traditions, communication style, and what new employees should expect in their first weeks.]
 
-> Key takeaway: While the detailed internal culture will be introduced by your manager and team, Clabane's public identity is built on genuine care for sensitive skin and expert-led formulation — that spirit should carry into how we work together too.`,
+> Key takeaway: Clabane's culture is customer-centric, team-oriented, and driven by a genuine passion for African skin health and education.`,
   },
   {
     slug: "what-clabane-stands-for",
@@ -694,10 +694,10 @@ Clabane's range extends beyond the face to body care, though our confirmed publi
 ## What We Know
 Clabane offers body washes described as non-drying and gentle, alongside moisturizing creams and lotions for long-lasting hydration, and sunscreens suitable for body use, such as the MD Advanced Hybrid Sunscreen SPF-50, which can be used on face and body.
 
-## A Note on Hair Care
-At the time this training was written, no dedicated Clabane hair care line was identified from publicly available information. If Clabane has since introduced hair care products, please flag this so the training can be updated.
+## Hair Care
+Clabane also operates in the hair care space through the **Clabane Hair Series**, formulated for African hair needs.
 
-[CLABANE INTERNAL POLICY REQUIRED: Please provide the current body care product lineup with names and key benefits, and confirm whether a hair care range exists.]
+[CLABANE INTERNAL POLICY REQUIRED: Please provide the current body care and Clabane Hair Series product lineups, with names and key benefits for each.]
 
 > Key takeaway: Don't guess at product names or claims for body care — confirm with your manager or the current catalogue if a customer asks for detail beyond what's covered here.`,
   },
@@ -833,12 +833,12 @@ const module3Questions: QuestionInput[] = [
   },
   {
     type: "MULTIPLE_CHOICE",
-    text: "According to this training, which product category was NOT confirmed as part of Clabane's current range?",
+    text: "Which Clabane product line is formulated specifically for African hair needs?",
     options: [
-      { text: "Hair care", isCorrect: true },
-      { text: "Cleansers", isCorrect: false },
-      { text: "Sunscreens", isCorrect: false },
-      { text: "Moisturizers", isCorrect: false },
+      { text: "Clabane Hair Series", isCorrect: true },
+      { text: "Clabane Organics", isCorrect: false },
+      { text: "Clabane MD", isCorrect: false },
+      { text: "Clabane Eczema Care", isCorrect: false },
     ],
   },
 ];
@@ -864,8 +864,8 @@ Clabane customers are often dealing with a sensitive skin concern that affects t
 ## Clabane's Support Channels
 Customers can reach Clabane through:
 - Email: care@clabane.com
-- WhatsApp / phone: +256-750748747
-- Facebook and Instagram: @ClabaneSkinCare
+- WhatsApp / phone: +256-750748747 or +256-762757307
+- Facebook and Instagram: @ClabaneSkinCare (#ClabaneSkinCare)
 - The chat feature on clabane.com
 
 > Key takeaway: Sensitive skin is personal to the customer — lead with empathy, not just a sales pitch.
@@ -913,7 +913,7 @@ Product questions are one of the most common customer interactions you'll have. 
 This is Clabane's published returns and refunds information — you can refer customers to it directly.
 
 ## Damaged or Incorrect Items
-If a customer receives a damaged or incorrect product, Clabane will replace it and cover the cost of return shipping. Customers should be directed to email care@clabane.com or contact Clabane by phone/WhatsApp at +256-750748747.
+If a customer receives a damaged or incorrect product, Clabane will replace it and cover the cost of return shipping. Customers should be directed to email care@clabane.com or contact Clabane by phone/WhatsApp at +256-750748747 or +256-762757307.
 
 ## Standard Returns
 - Clabane's standard return window is 14 days
@@ -935,7 +935,7 @@ Clabane Skincare, Plot 3A2 & 3A3 Sports Lane, Forest Mall, 1st Floor, Room 049, 
 ## What We Know
 For damaged, incorrect, or unresolved issues, Clabane's customer-facing contact is:
 - Email: care@clabane.com
-- Phone / WhatsApp: +256-750748747
+- Phone / WhatsApp: +256-750748747 or +256-762757307
 
 ## Internal Escalation Process
 [CLABANE INTERNAL POLICY REQUIRED: Please provide Clabane's internal escalation process — for example when a frontline employee should involve a supervisor or manager, how complaints should be logged, and expected response times.]

@@ -46,13 +46,42 @@ FAQ/Key Ingredients page text) that a public search snippet can't supply.
   replacement, return address, contact channels) and is used directly in
   Module 4
 
+## Content confirmed directly by Clabane management
+
+A second content update (after the initial web-search population above) was
+based on facts and copy supplied directly through Clabane management, not
+independently re-verified by web search in this environment (the network
+constraint above still applies). This filled several gaps that were
+previously left as placeholders, and corrected one that was wrong:
+
+- **Vision statement** (Module 1, Our Mission and Purpose) — previously a
+  placeholder asking for the exact wording; now included verbatim.
+- **Core values list** (Module 1, Our Values) — previously a set of inferred
+  "themes"; now the actual five named values (Safety First, Authenticity,
+  Excellence, Community, Natural Innovation).
+- **Culture facts** (Module 1, Our Culture) — customer-centric philosophy,
+  team appreciation, and passion for African skin health education added;
+  day-to-day mechanics (collaboration style, traditions) remain a
+  placeholder, as those weren't part of what was supplied.
+- **SGS certification and East Africa market position** (Module 1, Our
+  Story) — added as confirmed facts.
+- **Clabane Hair Series** — Module 3's Body Care lesson previously stated
+  explicitly that no hair care line was found and asked to be corrected if
+  one existed. That correction has now been made: Clabane does operate a
+  hair care line (Clabane Hair Series), and the module quiz question that
+  depended on the old "no hair care line" fact has been rewritten
+  accordingly.
+- **Second contact number** (`+256-762757307`) and the `#ClabaneSkinCare`
+  hashtag — added alongside the existing `+256-750748747` and
+  `@ClabaneSkinCare` in Module 4's three customer-contact lessons.
+
 ## What's real vs. placeholder, by module
 
 **Module 1 — Who We Are**: real. Founder (Dr. Malik Ssempereza), origin
-story (gap in the market for sensitive African skin), mission statement,
-brand positioning. Placeholders: a formally published vision statement (if
-distinct from the mission), a detailed values list, internal culture
-description, specific long-term goals.
+story (gap in the market for sensitive African skin), mission and vision
+statements, core values, culture highlights, SGS certification, and East
+Africa market position. Remaining placeholders: a detailed founder
+story/company timeline, and the day-to-day mechanics of company culture.
 
 **Module 2 — How We Work**: structure only, deliberately. No internal HR
 policy, code of conduct, or communication-tooling standard is public, so
@@ -61,22 +90,20 @@ with an explicit `[CLABANE INTERNAL POLICY REQUIRED]` block asking
 management to supply the real policy.
 
 **Module 3 — Our Products**: substantially real. Two confirmed sub-lines
-(Clabane Organics, Clabane MD), real collection categories, and specific
-named products with their actual stated ingredients (e.g. the Ultra Pigment
-Repair Kale Serum's 5% cysteamine, the MD Acne Control Cleanser's 10%
-benzoyl peroxide). Explicitly flagged gap: **no hair care line was found**
-on the site — rather than inventing one to match a generic category list,
-the Body Care lesson says so directly and asks to be corrected if one
-exists. The Key Ingredients and FAQ pages exist but their full text
-couldn't be retrieved, so the FAQ lesson is a mix of confirmed facts and a
-placeholder for the rest.
+(Clabane Organics, Clabane MD) plus the Clabane Hair Series, real collection
+categories, and specific named products with their actual stated
+ingredients (e.g. the Ultra Pigment Repair Kale Serum's 5% cysteamine, the
+MD Acne Control Cleanser's 10% benzoyl peroxide). The Key Ingredients and
+FAQ pages exist but their full text couldn't be retrieved, so the FAQ
+lesson is a mix of confirmed facts and a placeholder for the rest.
 
 **Module 4 — Customer Experience**: partially real in an unexpected way —
 the actual Refund & Returns policy (14-day window, damaged-item handling,
 return address, contact channels: care@clabane.com,
-+256-750748747, @ClabaneSkinCare) came through clearly in search results and
-is used verbatim in the Returns & Refunds lesson. Internal escalation
-process (who to notify, logging, SLAs) is a placeholder.
++256-750748747, +256-762757307, @ClabaneSkinCare / #ClabaneSkinCare) came
+through clearly and is used verbatim in the Returns & Refunds lesson.
+Internal escalation process (who to notify, logging, SLAs) is a
+placeholder.
 
 **Module 5 — Data and Security**: entirely generic, industry-standard
 security-awareness content, explicitly framed as such (not attributed to
@@ -92,19 +119,23 @@ hit the same network block, and a screenshot pasted into a chat message is
 visual-only: it cannot be extracted or saved as a binary asset in this
 environment, so it cannot become a logo file or product photo in the app.
 
-**The color palette and typography were updated**, based on a real
-screenshot of clabane.com's "Our Story" page that was shared directly in
-conversation and visually inspected (not fetched, not a fabricated guess).
-The placeholder navy (`#0d1b3e`) / gold (`#b8944f`) palette has been
-replaced with a warm terracotta brown primary (`#7a4023`) and a teal accent
-(`#1f7a70`), defined as CSS custom properties in `src/app/globals.css`
-(`--clabane-primary`, `--clabane-primary-dark`, `--clabane-accent`,
-`--clabane-gold`) and applied consistently across buttons, the nav logo
-badge, progress bars, links, and the certificate. The body font changed
-from Inter to Poppins (`src/app/layout.tsx`) for the rounder, friendlier
-look seen on the real site. Clabane's actual logo glyph/flourish was
-deliberately **not** reproduced — only color and type cues were carried
-over.
+**The color palette has been updated twice.** It first moved from a
+placeholder navy/gold scheme to a terracotta/teal scheme derived from a
+real clabane.com screenshot shared in conversation. It has since been
+replaced again with Clabane's actual named brand colors, confirmed by
+Clabane management: **nero** (`#0f0900`), **water leaf** (`#a8e8e2`), and
+**verdun green** (`#576a02`). These are defined as CSS custom properties in
+`src/app/globals.css` (`--clabane-nero`, `--clabane-water-leaf`,
+`--clabane-verdun-green`), with the app's semantic roles
+(`--clabane-primary`/`--clabane-primary-dark` for solid buttons/badges,
+`--clabane-accent` for links) mapped onto verdun green — the only one of
+the three with enough contrast against white for text and buttons — and
+`--clabane-highlight` mapped onto water leaf, used only for decorative
+borders/backgrounds (e.g. the lesson callout block) where contrast isn't a
+concern. The body font stays Poppins. Clabane's actual logo glyph was
+deliberately **not** reproduced — the brand tagline "We Love African Skin"
+was added next to the wordmark in the nav bar and on the login screen
+instead, since it's text, not an image asset.
 
 **To add real Clabane imagery**: an administrator can upload the logo,
 product photography, and module hero images through the existing upload
