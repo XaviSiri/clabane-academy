@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import clsx from "clsx";
+import { ClabaneLogo } from "./ClabaneLogo";
 
 interface NavLink {
   href: string;
@@ -22,18 +23,13 @@ export function NavBar({ links, roleLabel }: { links: NavLink[]; roleLabel: stri
   }
 
   return (
-    <nav className="border-b border-slate-200 bg-white">
+    <nav className="bg-gradient-to-r from-[var(--clabane-nero)] to-[var(--clabane-verdun-green)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-8">
-          <span className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--clabane-primary)] text-xs font-bold text-white">
-              CA
-            </span>
-            <span className="flex flex-col leading-tight">
-              Clabane Academy
-              <span className="hidden text-[10px] font-normal italic text-[var(--clabane-accent)] sm:inline">
-                We Love African Skin
-              </span>
+          <span className="flex items-center gap-3">
+            <ClabaneLogo imgClassName="h-8 sm:h-10 w-auto" />
+            <span className="hidden text-xs italic text-[var(--clabane-water-leaf)] min-[480px]:inline">
+              We Love African Skin
             </span>
           </span>
           <div className="hidden gap-1 sm:flex">
@@ -44,10 +40,10 @@ export function NavBar({ links, roleLabel }: { links: NavLink[]; roleLabel: stri
                   key={link.href}
                   href={link.href}
                   className={clsx(
-                    "rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wide",
+                    "rounded-full border px-3 py-2 text-xs font-semibold uppercase tracking-wide transition",
                     active
-                      ? "text-[var(--clabane-accent)]"
-                      : "text-slate-600 hover:text-[var(--clabane-accent)]"
+                      ? "border-[var(--clabane-water-leaf)] bg-[var(--clabane-water-leaf)] text-[var(--clabane-nero)]"
+                      : "border-white/30 text-white hover:border-[var(--clabane-water-leaf)] hover:bg-[var(--clabane-water-leaf)] hover:text-[var(--clabane-nero)]"
                   )}
                 >
                   {link.label}
@@ -57,7 +53,7 @@ export function NavBar({ links, roleLabel }: { links: NavLink[]; roleLabel: stri
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <span className="hidden text-xs uppercase tracking-wide text-slate-400 sm:inline">
+          <span className="hidden text-xs uppercase tracking-wide text-white/60 sm:inline">
             {roleLabel}
           </span>
           <button onClick={handleLogout} className="btn-secondary hidden text-xs sm:inline-flex">
@@ -67,7 +63,7 @@ export function NavBar({ links, roleLabel }: { links: NavLink[]; roleLabel: stri
             type="button"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 text-slate-600 sm:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-white/30 text-white sm:hidden"
             onClick={() => setMenuOpen((v) => !v)}
           >
             {menuOpen ? (
