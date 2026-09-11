@@ -23,15 +23,16 @@ export function NavBar({ links, roleLabel }: { links: NavLink[]; roleLabel: stri
   }
 
   return (
-    <nav className="bg-gradient-to-r from-[var(--clabane-nero)] to-[var(--clabane-verdun-green)]">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+    <nav className="relative overflow-hidden bg-[linear-gradient(135deg,theme(colors.nero)_0%,theme(colors.verdun-green)_100%)]">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-2 right-4 select-none whitespace-nowrap font-display text-4xl italic text-[rgba(168,232,226,0.08)]"
+      >
+        We Love African Skin
+      </span>
+      <div className="relative mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-8">
-          <span className="flex items-center gap-3">
-            <ClabaneLogo imgClassName="h-8 sm:h-10 w-auto" />
-            <span className="hidden text-xs italic text-[var(--clabane-water-leaf)] min-[480px]:inline">
-              We Love African Skin
-            </span>
-          </span>
+          <ClabaneLogo height={36} mobileHeight={28} />
           <div className="hidden gap-1 sm:flex">
             {links.map((link) => {
               const active = pathname === link.href || pathname.startsWith(link.href + "/");

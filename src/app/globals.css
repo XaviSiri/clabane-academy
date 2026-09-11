@@ -16,10 +16,58 @@
   --clabane-primary-dark: #3d4a01;
   --clabane-accent: var(--clabane-verdun-green);
   --clabane-highlight: var(--clabane-water-leaf);
+
+  /* Admin-dashboard-only design system ("Clabane Coral" / "Fresh Mint").
+     Scoped entirely under .admin-theme (see below) — this is a separate,
+     deliberately light-only palette for /admin/content, not a replacement
+     for the --clabane-* identity above, which stays the nav bar/login/
+     employee-facing brand. */
+  --bg-primary: #f8fafb;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f0f4f8;
+  --bg-border: #e2e8f0;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+
+  --accent-primary: #ff6b6b;
+  --accent-hover: #ff5252;
+  --accent-soft: #ffe5e5;
+  --accent-glow: rgba(255, 107, 107, 0.25);
+
+  --mint: #4ecdc4;
+  --mint-soft: #e0f7f5;
+
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Responsive sizing for ClabaneLogo — set via inline CSS custom properties
+   per instance (see src/components/ClabaneLogo.tsx), since Tailwind's
+   static class scanning can't pick up runtime-computed arbitrary values. */
+.clabane-logo-img {
+  height: var(--clabane-logo-height, 36px);
+}
+@media (max-width: 639px) {
+  .clabane-logo-img {
+    height: var(--clabane-logo-mobile-height, 28px);
+  }
 }
 
 @layer components {
@@ -50,4 +98,393 @@ body {
   .badge-failed {
     @apply inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800;
   }
+}
+
+/* ===========================================================================
+   ADMIN DASHBOARD DESIGN SYSTEM ("Clabane Coral" / "Fresh Mint")
+   Scoped to .admin-theme (applied by src/app/(admin)/admin/content/layout.tsx
+   to /admin/content and its sub-routes only). Overrides the existing global
+   .card/.btn-primary/.btn-secondary/.input-field/.badge-* classes within that
+   scope so the actual admin/content components (ModuleList, LessonManager,
+   ModuleEditPanel, etc.) pick up the new look with no markup changes, plus
+   adds a few new classes (.stat-card, .btn-icon, .nav-item, .badge, .modal-*)
+   for use if that page ever grows those elements — none currently exist in
+   the admin/content route tree; see the summary given at the end of this
+   change for exactly which spec sections apply structurally today.
+   =========================================================================== */
+.admin-theme {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.admin-theme * {
+  will-change: auto;
+}
+
+/* ---------- Cards ---------- */
+.admin-theme .card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+/* ---------- Stat cards ("Fresh Lift") ---------- */
+.admin-theme .stat-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-border);
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+.admin-theme .stat-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--mint));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.admin-theme .stat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-soft);
+  box-shadow: 0 12px 28px rgba(255, 107, 107, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+.admin-theme .stat-card:hover::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Buttons ---------- */
+.admin-theme .btn-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 22px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff7b7b 0%, #ff6b6b 50%, #ff5252 100%);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.25), 0 1px 2px rgba(15, 23, 42, 0.06);
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  will-change: transform;
+}
+.admin-theme .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35), 0 0 0 4px var(--accent-soft);
+}
+.admin-theme .btn-primary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+}
+.admin-theme .btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.45) 50%, transparent 80%);
+  transform: translateX(-100%);
+  transition: transform 0.7s ease;
+}
+.admin-theme .btn-primary:hover::before {
+  transform: translateX(100%);
+}
+.admin-theme .btn-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+}
+
+.admin-theme .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 22px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--text-primary);
+  border: 1.5px solid var(--bg-border);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+.admin-theme .btn-secondary:hover {
+  border-color: var(--mint);
+  color: var(--mint);
+  background: var(--mint-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(78, 205, 196, 0.2);
+}
+.admin-theme .btn-secondary:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+}
+
+.admin-theme .btn-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+.admin-theme .btn-icon:hover {
+  color: var(--accent-primary);
+  background: var(--accent-soft);
+  border-color: var(--accent-primary);
+  transform: scale(1.08) rotate(-3deg);
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+.admin-theme .btn-icon:active {
+  transform: scale(0.94);
+}
+
+/* ---------- Nav items (available if this section grows a sidebar) ---------- */
+.admin-theme .nav-item {
+  position: relative;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+.admin-theme .nav-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 3px;
+  height: 0;
+  background: var(--accent-primary);
+  border-radius: 0 4px 4px 0;
+  transform: translateY(-50%);
+  transition: height 0.3s ease;
+}
+.admin-theme .nav-item:hover {
+  background: var(--accent-soft);
+  color: var(--accent-primary);
+  padding-left: 20px;
+}
+.admin-theme .nav-item:hover::before {
+  height: 60%;
+}
+.admin-theme .nav-item.active {
+  background: var(--accent-soft);
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+.admin-theme .nav-item.active::before {
+  height: 60%;
+}
+
+/* ---------- Tables (available if this section grows one) ---------- */
+.admin-theme table thead th {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  padding: 14px 16px;
+}
+.admin-theme table tbody tr {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--bg-border);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+.admin-theme table tbody td {
+  padding: 14px 16px;
+}
+.admin-theme table tbody tr:hover {
+  background: var(--accent-soft);
+}
+.admin-theme table tbody tr::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: var(--accent-primary);
+  transition: width 0.2s ease;
+}
+.admin-theme table tbody tr:hover::before {
+  width: 3px;
+}
+
+/* ---------- Inputs ---------- */
+.admin-theme .input-field,
+.admin-theme .input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--bg-border);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+.admin-theme .input-field:hover,
+.admin-theme .input:hover {
+  border-color: #cbd5e1;
+}
+.admin-theme .input-field:focus,
+.admin-theme .input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.admin-theme .input-field::placeholder,
+.admin-theme .input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ---------- Badges / status pills ----------
+   Mapped onto the existing badge-* classes already used in ModuleList and
+   LessonManager (Published/Draft), so no component markup changes needed.
+   Also defines the spec's generic .badge/.badge-* names for future use. */
+.admin-theme .badge,
+.admin-theme .badge-not-started,
+.admin-theme .badge-in-progress,
+.admin-theme .badge-completed,
+.admin-theme .badge-failed {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.admin-theme .badge-success,
+.admin-theme .badge-completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+.admin-theme .badge-warning,
+.admin-theme .badge-in-progress {
+  background: #fef3c7;
+  color: #92400e;
+}
+.admin-theme .badge-danger,
+.admin-theme .badge-failed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.admin-theme .badge-info {
+  background: var(--mint-soft);
+  color: #0f766e;
+}
+.admin-theme .badge-accent {
+  background: var(--accent-soft);
+  color: #b91c1c;
+}
+.admin-theme .badge-not-started {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+/* ---------- Modals & dropdowns (available if this section grows one) ---------- */
+.admin-theme .modal-overlay {
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  animation: admin-theme-fade-in 0.2s ease;
+}
+.admin-theme .modal-panel {
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15);
+  animation: admin-theme-modal-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes admin-theme-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes admin-theme-modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ---------- Logo halo (available; not applied to the shared nav-bar logo —
+   see summary for why) ---------- */
+.admin-theme .logo-container {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 14px;
+  background: radial-gradient(circle at center, var(--accent-soft) 0%, transparent 75%);
+  transition: all 0.35s ease;
+}
+.admin-theme .logo-container:hover {
+  background: radial-gradient(circle at center, var(--accent-soft) 0%, var(--accent-soft) 40%, transparent 85%);
+  transform: scale(1.02);
+}
+.admin-theme .logo-container img {
+  transition: filter 0.35s ease, transform 0.35s ease;
+}
+.admin-theme .logo-container:hover img {
+  filter: drop-shadow(0 4px 12px var(--accent-glow));
+  transform: rotate(-2deg) scale(1.05);
+}
+
+/* ---------- Content page header (ContentPageHeader, /admin/content only) ---------- */
+.admin-theme .content-page-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-border);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.admin-theme .content-page-header__title h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.admin-theme .content-page-header__subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--text-secondary);
 }

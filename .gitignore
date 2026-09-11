@@ -42,3 +42,6 @@ next-env.d.ts
 
 # test artifacts
 /test-results
+
+# disposable local QA/debug scripts (never meant to be committed)
+*.tmp.mjs

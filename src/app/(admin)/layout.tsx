@@ -12,7 +12,7 @@ const links = [
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   await requireAdmin();
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-full bg-slate-50">
       <NavBar links={links} roleLabel="Administrator" />
       <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
     </div>
